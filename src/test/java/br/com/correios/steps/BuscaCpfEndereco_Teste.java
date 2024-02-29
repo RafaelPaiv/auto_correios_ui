@@ -1,8 +1,12 @@
 package br.com.correios.steps;
 
+import java.io.IOException;
+
 import br.com.correios.PageObjects.HomePage;
 import br.com.correios.metodos.Metodos;
 import br.com.correios.navegadores.Navegadores;
+import br.com.correios.utils.MassaDados;
+import br.com.correios.utils.MassaDeDados;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -11,6 +15,8 @@ public class BuscaCpfEndereco_Teste {
 	
 	Metodos metodo = new Metodos();
 	HomePage home = new HomePage();
+	MassaDados massa = new MassaDados();
+	MassaDeDados mas = new MassaDeDados();
 	
 	@Given("que acesso a home page do site")
 	public void queAcessoAHomePageDoSite() {
@@ -21,17 +27,17 @@ public class BuscaCpfEndereco_Teste {
 	@When("envio dados para busca no campo Busca CEP ou Endereco")
 	public void envioDadosParaBuscaNoCampoBuscaCEPOuEndereco() {
 		
-		metodo.digitar(home.getBuscarCep(), "01452-000");
-		metodo.submit(home.getBuscarCep());
+		home.buscarCEP(mas.incerirCEP());
 	    
 	}
 	@Then("valido CEP ou Endereco")
-	public void validoCEPOuEndereco() {
+	public void validoCEPOuEndereco() throws IOException {
 		
-		home.validarCepEndereco();
-		Navegadores.fecharNavegador();
 		
-	    
+		massa.buscarDadosExcel();
+		//Navegadores.fecharNavegador();
+		
+		
 	}
 
 

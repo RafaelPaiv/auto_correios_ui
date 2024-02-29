@@ -5,6 +5,7 @@ import java.util.Set;
 import org.openqa.selenium.By;
 
 import br.com.correios.metodos.Metodos;
+import br.com.correios.utils.MassaDados;
 
 public class HomePage extends Metodos {
 
@@ -40,16 +41,13 @@ public class HomePage extends Metodos {
 	public By getBtnNovaBusca() {
 		return btnNovaBusca;
 	}
-	
-	
-//Parametros
-	
 
-	
+//Parametros
 
 //Metodos
 
-	public void validarCepEndereco() {
+	public void validarCepEndereco(String logradouro, String bairro, String uf, String cep)
+			throws InterruptedException {
 
 		String janelaPrincipal = driver.getWindowHandle();
 		Set<String> janelasAbertas = driver.getWindowHandles();
@@ -62,15 +60,64 @@ public class HomePage extends Metodos {
 
 			}
 		}
-		
-		gerarEvidencia("CT01- Buscar CEP ou Endereco - caminho feliz");
-		validarTexto(getLogradouroNome(), "Avenida Brigadeiro Faria Lima - de 2129 a 3251 - lado ímpar");
-		validarTexto(getBairoDistrito(), "Jardim Paulistano");
-		validarTexto(getLocalidadeUF(), "São Paulo/SP");
-		validarTexto(getCEP(), "01452-000");
 
-		driver.close();
+		validarTexto(getLogradouroNome(), logradouro);
+		validarTexto(getBairoDistrito(), bairro);
+		validarTexto(getLocalidadeUF(), uf);
+		validarTexto(getCEP(), cep);
+		gerarEvidencia("CT01- " + driver.findElement(getCEP()).getText() + " validado");
+		// driver.switchTo().window(janelaPrincipal);
+		// Thread.sleep(1000);
+		// driver.close();
 
 	}
+
+	public void buscarCEP(String cep) {
+
+		/**
+		 * Metodo para digitar textos em um elemento Web
+		 */
+
+		try {
+
+			driver.findElement(getBuscarCep()).sendKeys(cep);
+
+			submit(getBuscarCep());
+
+		} catch (Exception e) {
+			System.out.println("erro ao digitar o " + cep + " no elemento web " + getBuscarCep() + ".");
+		}
+	}
+	
+	
+	public void validarLogradouro(String logradouro)
+			throws InterruptedException {
+
+		String janelaPrincipal = driver.getWindowHandle();
+		Set<String> janelasAbertas = driver.getWindowHandles();
+
+		for (String janela : janelasAbertas) {
+
+			if (!janela.equals(janelaPrincipal)) {
+
+				driver.switchTo().window(janela);
+
+			}
+		}
+
+		validarTexto(getLogradouroNome(), logradouro);
+		gerarEvidencia("CT01- " + driver.findElement(getCEP()).getText() + " validado");
+		// driver.switchTo().window(janelaPrincipal);
+		// Thread.sleep(1000);
+		// driver.close();
+
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }
