@@ -35,7 +35,7 @@ public class BuscaCpfEndereco_Teste {
 		
 		
 		massa.buscarDadosExcel();
-		//Navegadores.fecharNavegador();
+		Navegadores.fecharNavegador();
 		
 		
 	}
